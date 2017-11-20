@@ -1,0 +1,18 @@
+---
+object_type: instance
+version: 1.0
+object:
+  attributes:
+    display_name: Provision VM from Template
+    name: template
+    inherits: 
+    description: 
+  fields:
+  - Provision:
+      value: "/Cloud/VM/Provisioning/StateMachines/Methods/Provision"
+  - CheckProvisioned:
+      value: "/Cloud/VM/Provisioning/StateMachines/Methods/CheckProvisioned"
+  - RegisterDHCP:
+      value: "/Integration/Methods/add_to_service"
+  - ActivateCMDB:
+      value: "/Integration/Methods/order_ansible_playbook"
