@@ -1,0 +1,491 @@
+---
+- description: 
+  buttons: submit,cancel
+  label: Order (RHEL7|Windows) Web Cloud Service
+  blueprint_id: 
+  dialog_tabs:
+  - description: 
+    display: edit
+    label: Basic Information
+    display_method: 
+    display_method_options: 
+    position: 0
+    dialog_groups:
+    - description: 
+      display: edit
+      label: Parameters
+      display_method: 
+      display_method_options: 
+      position: 0
+      dialog_fields:
+      - name: Region
+        description: 
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<Choose>"
+        - - openstack.hailstorm5.coe.muc.redhat.com
+          - EU1
+        - - eu2
+          - EU2
+        - - us1
+          - US1
+        - - us2
+          - US2
+        values_method: 
+        values_method_options: {}
+        options:
+          :sort_by: :description
+          :sort_order: :ascending
+          :force_multi_value: false
+        label: Region
+        position: 0
+        validator_type: 
+        validator_rule: 
+        reconfigurable: 
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: true
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
+      - name: Environment
+        description: ''
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<Choose>"
+        - - development
+          - development
+        - - production
+          - production
+        values_method: 
+        values_method_options: {}
+        options:
+          :sort_by: :description
+          :sort_order: :ascending
+          :force_multi_value: false
+        label: Environment
+        position: 1
+        validator_type: 
+        validator_rule: 
+        reconfigurable: true
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
+      - name: Elastic
+        description: ''
+        data_type: 
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: false
+        required_method: 
+        required_method_options: {}
+        default_value: f
+        values: 
+        values_method: 
+        values_method_options: {}
+        options: {}
+        label: Elastic
+        position: 2
+        validator_type: 
+        validator_rule: 
+        reconfigurable: true
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldCheckBox
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
+      - name: floating_ip_address
+        description: 
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<none>"
+        values_method: 
+        values_method_options: {}
+        options:
+          :force_multi_value: false
+          :sort_by: :description
+          :sort_order: :ascending
+        label: Floating IP
+        position: 3
+        validator_type: 
+        validator_rule: 
+        reconfigurable: 
+        dynamic: true
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: true
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: Integration
+          ae_class: Methods
+          ae_instance: list_floating_ips
+          ae_message: 
+          ae_attributes: {}
+      - name: Image
+        description: 
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<none>"
+        values_method: 
+        values_method_options: {}
+        options:
+          :force_multi_value: false
+          :sort_by: :description
+          :sort_order: :ascending
+        label: Image
+        position: 4
+        validator_type: 
+        validator_rule: 
+        reconfigurable: 
+        dynamic: true
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: true
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: Integration
+          ae_class: Methods
+          ae_instance: list_templates
+          ae_message: 
+          ae_attributes: {}
+      - name: Flavour
+        description: ''
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<Choose>"
+        - - unmanaged
+          - Root/Unmanaged
+        - - managed
+          - non-Root/managed
+        values_method: 
+        values_method_options: {}
+        options:
+          :sort_by: :description
+          :sort_order: :ascending
+          :force_multi_value: false
+        label: Flavour
+        position: 5
+        validator_type: 
+        validator_rule: 
+        reconfigurable: true
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
+      - name: Role
+        description: ''
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<Choose>"
+        - - app
+          - App Server
+        - - db
+          - DB Server
+        - - web
+          - Web Server
+        values_method: 
+        values_method_options: {}
+        options:
+          :sort_by: :description
+          :sort_order: :ascending
+          :force_multi_value: false
+        label: Role
+        position: 6
+        validator_type: 
+        validator_rule: 
+        reconfigurable: true
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: true
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
+      - name: Software
+        description: 
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<none>"
+        values_method: 
+        values_method_options: {}
+        options:
+          :force_multi_value: false
+          :sort_by: :description
+          :sort_order: :ascending
+        label: Software
+        position: 7
+        validator_type: 
+        validator_rule: 
+        reconfigurable: 
+        dynamic: true
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: true
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: Integration
+          ae_class: Methods
+          ae_instance: list_apps
+          ae_message: 
+          ae_attributes: {}
+      - name: Size
+        description: ''
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: true
+        required_method: 
+        required_method_options: {}
+        default_value: 
+        values:
+        - - 
+          - "<none>"
+        values_method: 
+        values_method_options: {}
+        options:
+          :force_multi_value: false
+          :sort_by: :description
+          :sort_order: :ascending
+        label: Size
+        position: 8
+        validator_type: 
+        validator_rule: 
+        reconfigurable: true
+        dynamic: true
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: 
+        auto_refresh: true
+        trigger_auto_refresh: false
+        visible: true
+        type: DialogFieldDropDownList
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: Integration
+          ae_class: Methods
+          ae_instance: list_flavors
+          ae_message: 
+          ae_attributes: {}
+      - name: Price
+        description: ''
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: false
+        required_method: 
+        required_method_options: {}
+        default_value: 20€
+        values: 
+        values_method: 
+        values_method_options: {}
+        options:
+          :protected: false
+        label: Price
+        position: 9
+        validator_type: 
+        validator_rule: 
+        reconfigurable: true
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: true
+        auto_refresh: 
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldTextBox
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
+      - name: Status
+        description: 
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: false
+        required_method: 
+        required_method_options: {}
+        default_value: ''
+        values: 'ATTENTION: Selected Region ExtManagementSystem not valid'
+        values_method: 
+        values_method_options: {}
+        options:
+          :protected: false
+        label: Status
+        position: 10
+        validator_type: 
+        validator_rule: 
+        reconfigurable: 
+        dynamic: true
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: true
+        trigger_auto_refresh: false
+        visible: true
+        type: DialogFieldTextBox
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: Integration
+          ae_class: Methods
+          ae_instance: display_status
+          ae_message: 
+          ae_attributes: {}
