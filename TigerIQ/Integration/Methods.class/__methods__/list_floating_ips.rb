@@ -21,12 +21,12 @@ module TigerIQ
             ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => ems_name)
             
             list={}
-            ems.floating_ips.each{|f| list[f.id] = f.name } unless ems.nil?
-           # ems.floating_ips.each{|f| list[f.id] = f.name unless f.status == "ACTIVE" } unless ems.nil?
+            # ems.floating_ips.each{|f| list[f.id] = f.name } unless ems.nil?
+            ems.floating_ips.each{|f| list[f.id] = f.name unless f.status == "ACTIVE" } unless ems.nil?
 
             return nil => "<none>" if list.blank?
 
-           # list[nil] = "<select>" if list.length > 1
+            # list[nil] = "<select>" if list.length > 1
             list
           end
 
