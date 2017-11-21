@@ -20,7 +20,7 @@ module TigerIQ
             ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => ems_name)
             
             list={}
-            ems.floating_ips.each{|i| list[i.id] = i.name if i.cloud_tenant.id == cloud_tenant and i.status == "DOWN" } unless ems.nil?
+            ems.cloud_tenants.each{|i| list[i.id] = i.name } unless ems.nil?
 
             return nil => "<none>" if list.blank?
 
@@ -46,13 +46,9 @@ module TigerIQ
             dialog_field["values"] = list
             dialog_field["default_value"] = list.length == 1 ? list.keys.first : nil
           end
-
+          
           def ems_name
             $evm.root['dialog_region']
-          end
-
-          def cloud_tenant
-            $evm.root['dialog_tenant'].to_i
           end
         end
       end

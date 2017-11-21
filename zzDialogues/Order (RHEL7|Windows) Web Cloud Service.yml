@@ -33,7 +33,7 @@
         values:
         - - 
           - "<Choose>"
-        - - openstack.hailstorm5.coe.muc.redhat.com
+        - - eu1
           - EU1
         - - eu2
           - EU2
@@ -114,41 +114,46 @@
           ae_instance: 
           ae_message: 
           ae_attributes: {}
-      - name: Elastic
-        description: ''
-        data_type: 
+      - name: tenant
+        description: 
+        data_type: string
         notes: 
         notes_display: 
         display: edit
         display_method: 
         display_method_options: {}
-        required: false
+        required: true
         required_method: 
         required_method_options: {}
-        default_value: f
-        values: 
+        default_value: 
+        values:
+        - - 
+          - "<none>"
         values_method: 
         values_method_options: {}
-        options: {}
-        label: Elastic
+        options:
+          :force_multi_value: false
+          :sort_by: :description
+          :sort_order: :ascending
+        label: Tenant
         position: 2
         validator_type: 
         validator_rule: 
-        reconfigurable: true
-        dynamic: false
+        reconfigurable: 
+        dynamic: true
         show_refresh_button: 
         load_values_on_init: 
         read_only: false
-        auto_refresh: 
-        trigger_auto_refresh: 
+        auto_refresh: true
+        trigger_auto_refresh: true
         visible: true
-        type: DialogFieldCheckBox
+        type: DialogFieldDropDownList
         resource_action:
           action: 
           resource_type: DialogField
-          ae_namespace: 
-          ae_class: 
-          ae_instance: 
+          ae_namespace: Integration
+          ae_class: Methods
+          ae_instance: list_cloud_tenants
           ae_message: 
           ae_attributes: {}
       - name: floating_ip_address
@@ -413,6 +418,43 @@
           ae_instance: list_flavors
           ae_message: 
           ae_attributes: {}
+      - name: Elastic
+        description: ''
+        data_type: 
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: false
+        required_method: 
+        required_method_options: {}
+        default_value: f
+        values: 
+        values_method: 
+        values_method_options: {}
+        options: {}
+        label: Elastic
+        position: 9
+        validator_type: 
+        validator_rule: 
+        reconfigurable: true
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldCheckBox
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
       - name: Price
         description: ''
         data_type: string
@@ -431,7 +473,7 @@
         options:
           :protected: false
         label: Price
-        position: 9
+        position: 10
         validator_type: 
         validator_rule: 
         reconfigurable: true
@@ -469,7 +511,7 @@
         options:
           :protected: false
         label: Status
-        position: 10
+        position: 11
         validator_type: 
         validator_rule: 
         reconfigurable: 

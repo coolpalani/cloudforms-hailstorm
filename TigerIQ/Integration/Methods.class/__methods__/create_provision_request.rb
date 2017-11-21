@@ -99,8 +99,12 @@ def exec_provision_request(requester, parent_service_id)
     Ems.cloud_networks.find_all{|i| i.name == network}.first.id rescue nil
   end
   
+  # def cloud_tenant
+  #   Ems.cloud_tenants.find_all{|i| i.name == CloudTenant}.first.id rescue nil
+  # end
+
   def cloud_tenant
-    Ems.cloud_tenants.find_all{|i| i.name == CloudTenant}.first.id rescue nil
+    $evm.root['dialog_tenant'].to_i
   end
 
   def placement_availability_zone
@@ -147,7 +151,7 @@ def exec_provision_request(requester, parent_service_id)
   DbNetwork  = 'db network'
   WebNetwork = 'web network'
   
-  CloudTenant   = "demo-vms"
+  # CloudTenant   = "demo-vms"
   SecurityGroup = "default-demo-vms"
   
   Region      = $evm.root['dialog_region']        # OSP provider
