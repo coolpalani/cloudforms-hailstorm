@@ -151,7 +151,6 @@ def exec_provision_request(requester, parent_service_id)
   DbNetwork  = 'db network'
   WebNetwork = 'web network'
   
-  # CloudTenant   = "demo-vms"
   SecurityGroup = "default-demo-vms"
   
   Region      = $evm.root['dialog_region']        # OSP provider
