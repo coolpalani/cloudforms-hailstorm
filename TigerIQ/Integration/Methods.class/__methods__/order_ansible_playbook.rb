@@ -3,10 +3,8 @@
 #
 
 def service_template
-  pb    = play_book
-  stap  = $evm.vmdb(:ServiceTemplate).find_by(:name => pb, :type => "ServiceTemplateAnsiblePlaybook")
-  stap.nil? ? raise "ServiceTemplateAnsiblePlaybook <#{pb}> not found" : pb
-  # 'Apache'
+  stap  = $evm.vmdb(:ServiceTemplate).find_by(:name => play_book, :type => "ServiceTemplateAnsiblePlaybook")
+  stap.nil? ? raise "ServiceTemplateAnsiblePlaybook <#{play_book}> not found" : play_book
 end
 
 def extra_vars
