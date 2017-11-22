@@ -2,6 +2,10 @@
 # Description:
 #
 
+def check_service_template
+  $evm.vmdb(:ServiceTemplate).find_by(:name => service_template, :type => "ServiceTemplateAnsiblePlaybook")
+end
+
 def extra_vars
   # key_list = $evm.root.attributes.keys.select { |k| k.start_with?('dialog_param') }
   key_list = {}
@@ -48,7 +52,7 @@ def order_playbook
     service_template,
     extra_vars.merge(:credential => machine_credential, :hosts => hosts)
   )
-  $evm.log(:info, "Submitted provision request #{request.id} for service template #{service_template_name}")
+  $evm.log(:info, "Submitted provision request #{request.id} for service template #{service_template}")
 end
 
 def service_template
@@ -61,5 +65,7 @@ ANSIBLE_DIALOG_VAR_REGEX = Regexp.new(/dialog_param_(.*)/)
 
 @prov = $evm.root["miq_provision"]
 vm = @prov.vm
+
+raise "ServiceTemplateAnsiblePlaybook <#{service_template}> not found" if check_service_template.nil?
 
 order_playbook
