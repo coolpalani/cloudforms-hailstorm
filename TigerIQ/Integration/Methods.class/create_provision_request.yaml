@@ -8,5 +8,9 @@ object:
     inherits: 
     description: 
   fields:
+  - rhel_public_key:
+      value: v2:{K3syoxIcda/TbyhyGAM8ZInZearlfkNpNfft5OsqIwAES6GIBmR+omSXtp8LdlNGYpsQ8PymqVR5cUR8w2epcK3XkxpZk9ulaRuyED/WrScNuYwHGpMDdBPbuy5FJ9hyqik6096QJ/orHqnhGLmCti56gJNFBz3K/u7xddtFvUwrgdG80MadY+zm6kXfRwV3PXFBqmY5l19ruekT/v1YqjIZIv7yHLdHVRuEBhtgEJN2yVHkm3IfEb1NYMEGnZBeSfR/8ZQrhPiojorEk0tDWHVI6VnPQBN2FpKATTL3SsSLHnFX/AyrutsoX+rI5P6qRNgbmYkeE5wBTo7liGsVZfl3jh+yjMdVBNfGcxwgVfkWWPFaF9c5JpcyO4Qc/hPU+HoQdHKTyyC4rpb1kZzAl2WyTlGR9YpVF+Yce0PA89xU+fuLaT9XEYCrD22nE7g1Ku7dsKGu90x6weLPtToSr+xP8Ye27MTSTzYNwREMM3BmyV/W1IvbQixbpGJseGZrHKtq9TtkmjtQDyFxVvBfAE1dFvT9NnuK2hCNYpVvHb0=}
+  - windows_admin_password:
+      value: v2:{ayHjff6LXz8IC3BnaUiCmg==}
   - method1:
       value: create_provision_request
