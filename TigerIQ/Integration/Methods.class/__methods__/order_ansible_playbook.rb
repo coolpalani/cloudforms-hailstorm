@@ -2,10 +2,6 @@
 # Description:
 #
 
-def check_service_template
-  $evm.vmdb(:ServiceTemplate).find_by(:name => service_template, :type => "ServiceTemplateAnsiblePlaybook")
-end
-
 def extra_vars
   # key_list = $evm.root.attributes.keys.select { |k| k.start_with?('dialog_param') }
   key_list = {}
@@ -35,16 +31,9 @@ def hosts
 end
 
 def machine_credential
-  # image      = @prov.source.name
-  # credential = $evm.vmdb(AUTH_CLASS).find_all{|c| c.name.downcase == image.downcase}
-  # return credential.id unless credential.nil?
-
-  # credential = nil
-  # $evm.vmdb(AUTH_CLASS).all.each do |c|
-  #   credential = c if c.name.downcase == image.downcase # crednetial name must match image name
-  # end
-  # credential.id unless credential.nil?
-  $evm.vmdb(AUTH_CLASS).find_by(:name => @prov.source.name)
+  image      = @prov.source.name
+  credential = $evm.vmdb(AUTH_CLASS).find_by(:name => image) || nil
+  credential.nil? ? raise "Credential match image <#{image} not found" : credential.id
 end
 
 def order_playbook
@@ -56,16 +45,17 @@ def order_playbook
 end
 
 def service_template
-  @prov.options[:ws_values][:ansible_inside]
+  pb    = @prov.options[:ws_values][:ansible_inside]
+  stap  = $evm.vmdb(:ServiceTemplate).find_by(:name => pb, :type => "ServiceTemplateAnsiblePlaybook")
+  stap.nil? ? raise "ServiceTemplateAnsiblePlaybook <#{pb}> not found" : pb
   # 'Apache'
 end
+
+# Do stuff
 
 AUTH_CLASS = "ManageIQ_Providers_AutomationManager_Authentication".freeze
 ANSIBLE_DIALOG_VAR_REGEX = Regexp.new(/dialog_param_(.*)/)
 
 @prov = $evm.root["miq_provision"]
-vm = @prov.vm
-
-raise "ServiceTemplateAnsiblePlaybook <#{service_template}> not found" if check_service_template.nil?
 
 order_playbook
