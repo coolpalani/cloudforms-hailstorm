@@ -3,13 +3,12 @@
 #
 
 def extra_vars
-  return nil
-  key_list = $evm.root.attributes.keys.select { |k| k.start_with?('dialog_param') }
+  # key_list = $evm.root.attributes.keys.select { |k| k.start_with?('dialog_param') }
+  key_list = {}
   key_list.each_with_object({}) do |key, hash|
     match_data = ANSIBLE_DIALOG_VAR_REGEX.match(key)
     hash["param_#{match_data[1]}"] = $evm.root[key] if match_data
   end
-  nil
 end
 
 def hosts
