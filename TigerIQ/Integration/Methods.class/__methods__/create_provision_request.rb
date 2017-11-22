@@ -196,4 +196,3 @@ Ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => Region)
 raise "Unknown EMS #{Region}" if Ems.nil?
 
 exec_provision_request(user, parent_service_id)
-
