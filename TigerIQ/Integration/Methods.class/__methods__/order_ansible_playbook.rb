@@ -2,6 +2,13 @@
 # Description:
 #
 
+def service_template
+  pb    = play_book
+  stap  = $evm.vmdb(:ServiceTemplate).find_by(:name => pb, :type => "ServiceTemplateAnsiblePlaybook")
+  stap.nil? ? raise "ServiceTemplateAnsiblePlaybook <#{pb}> not found" : pb
+  # 'Apache'
+end
+
 def extra_vars
   # key_list = $evm.root.attributes.keys.select { |k| k.start_with?('dialog_param') }
   key_list = {}
@@ -9,6 +16,12 @@ def extra_vars
     match_data = ANSIBLE_DIALOG_VAR_REGEX.match(key)
     hash["param_#{match_data[1]}"] = $evm.root[key] if match_data
   end
+end
+
+def machine_credential
+  image      = @prov.source.name
+  credential = $evm.vmdb(AUTH_CLASS).find_by(:name => image) || nil
+  credential.nil? ? raise "Credential match image <#{image} not found" : credential.id
 end
 
 def hosts
@@ -30,12 +43,6 @@ def hosts
   end
 end
 
-def machine_credential
-  image      = @prov.source.name
-  credential = $evm.vmdb(AUTH_CLASS).find_by(:name => image) || nil
-  credential.nil? ? raise "Credential match image <#{image} not found" : credential.id
-end
-
 def order_playbook
   request = $evm.execute('create_service_provision_request',
     service_template,
@@ -44,11 +51,8 @@ def order_playbook
   $evm.log(:info, "Submitted provision request #{request.id} for service template #{service_template}")
 end
 
-def service_template
-  pb    = @prov.options[:ws_values][:ansible_inside]
-  stap  = $evm.vmdb(:ServiceTemplate).find_by(:name => pb, :type => "ServiceTemplateAnsiblePlaybook")
-  stap.nil? ? raise "ServiceTemplateAnsiblePlaybook <#{pb}> not found" : pb
-  # 'Apache'
+def play_book
+  @prov.options[:ws_values][:ansible_inside]
 end
 
 # Do stuff
@@ -58,4 +62,4 @@ ANSIBLE_DIALOG_VAR_REGEX = Regexp.new(/dialog_param_(.*)/)
 
 @prov = $evm.root["miq_provision"]
 
-order_playbook
+order_playbook unless play_book.nil?
