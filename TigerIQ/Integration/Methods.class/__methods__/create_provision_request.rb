@@ -192,6 +192,8 @@ Region      = $evm.root['dialog_region']        # OSP provider
 Environment = $evm.root['dialog_environment']   # Availability Zone??
 elastic     = $evm.root['dialog_elastic']       # TBC, OSP provider capability
 
+Environment = 'nova' # testing override
+
 Ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => Region)
 raise "Unknown EMS #{Region}" if Ems.nil?
 
