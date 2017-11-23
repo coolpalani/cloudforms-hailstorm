@@ -71,7 +71,7 @@ def exec_provision_request(requester, parent_service_id)
 
   # $evm.log(:info, args)
 
-  request_id = $evm.execute('create_provision_request', *args)
+  $evm.execute('create_provision_request', *args)
 end
 
 def get_vm_name(vm_name)
@@ -195,4 +195,4 @@ elastic     = $evm.root['dialog_elastic']       # TBC, OSP provider capability
 Ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => Region)
 raise "Unknown EMS #{Region}" if Ems.nil?
 
-exec_provision_request(user, parent_service_id)
+request = exec_provision_request(user, parent_service_id)

@@ -1,0 +1,6 @@
+<%
+   script_username = "Administrator"
+%>rem cmd
+net user <%=script_username%> <%=evm.fetch_path(:ws_values, :ssh_public_key)%> /ADD
+net localgroup "Remote Desktop Users" <%=script_username%> /ADD
+

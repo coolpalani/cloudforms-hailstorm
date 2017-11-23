@@ -34,7 +34,7 @@ def hosts
     vm.refresh
     $evm.root['ae_result'] = 'retry'
     $evm.root['ae_retry_interval'] = 1.minute
-    exit MIQ_RETRY
+    exit MIQ_OK
   else
     # vm.ipaddresses.find_all{|ip|ip.match(/^10./)}
     vm.ipaddresses.first

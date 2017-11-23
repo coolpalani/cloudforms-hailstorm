@@ -1,0 +1,6 @@
+#cloud-config
+users:
+  - name: root
+    ssh-authorized-keys:
+      - <%= evm.fetch_path(:ws_values, :ssh_public_key) %>
+
