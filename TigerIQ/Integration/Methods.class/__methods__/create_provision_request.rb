@@ -69,7 +69,7 @@ def exec_provision_request(requester, parent_service_id)
   # arg8 = miqCustomAttributes
   args << nil
 
-  # $evm.log(:info, args)
+  $evm.log(:info, args)
 
   $evm.execute('create_provision_request', *args)
 end
