@@ -32,7 +32,7 @@ module TigerIQ
 
             return nil => "<none>" if list.blank?
 
-            list[nil] = "<select>" if list.length > 1
+            # list[nil] = "<select>" if list.length > 1
             list
           end
 

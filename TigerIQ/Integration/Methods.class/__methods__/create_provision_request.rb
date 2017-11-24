@@ -152,7 +152,7 @@ end
 # end
 
 def get_software
-  { $evm.root['dialog_ansible_inside_play_book'] => "roles=#{$evm.root['dialog_software'].join(",")}" }
+  { $evm.root['dialog_ansible_inside_play_book'] => "rolescfme=#{$evm.root['dialog_software'].join(",")}" }
 end
 
 def ssh_public_key

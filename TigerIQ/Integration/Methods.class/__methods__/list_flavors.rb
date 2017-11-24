@@ -21,11 +21,11 @@ module TigerIQ
             ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => ems_name)
             
             list={}
-            ems.flavors.each{|f| list[f.id] = f.name } unless ems.nil?
+            ems.flavors.each{|f| list[f.id] = f.name unless f.name.match(/large/i)} unless ems.nil?
 
             return nil => "<none>" if list.blank?
 
-            list[nil] = "<select>" if list.length > 1
+            # list[nil] = "<select>" if list.length > 1
             list
           end
 
