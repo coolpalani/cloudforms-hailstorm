@@ -103,10 +103,6 @@ def cloud_network
   Ems.cloud_networks.find_all{|i| i.name == network}.first.id rescue nil
 end
 
-# def cloud_tenant
-#   Ems.cloud_tenants.find_all{|i| i.name == CloudTenant}.first.id rescue nil
-# end
-
 def cloud_tenant
   $evm.root['dialog_tenant'].to_i
 end
@@ -156,7 +152,7 @@ end
 # end
 
 def get_software
-  $evm.root['dialog_software']
+  { $evm.root['dialog_ansible_inside_play_book'] => "roles=#{$evm.root['dialog_software'].join(",")}" }
 end
 
 def ssh_public_key

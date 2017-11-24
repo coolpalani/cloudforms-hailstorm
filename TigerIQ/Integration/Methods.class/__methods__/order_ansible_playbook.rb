@@ -3,17 +3,17 @@
 #
 
 def service_template
-  stap  = $evm.vmdb(:ServiceTemplate).find_by(:name => play_book, :type => "ServiceTemplateAnsiblePlaybook")
-  stap.nil? ? (raise "ServiceTemplateAnsiblePlaybook <#{play_book}> not found") : stap
+  stap  = $evm.vmdb(:ServiceTemplate).find_by(:name => playbook, :type => "ServiceTemplateAnsiblePlaybook")
+  stap.nil? ? (raise "ServiceTemplateAnsiblePlaybook <#{playbook}> not found") : stap
 end
 
 def extra_vars
-  # key_list = $evm.root.attributes.keys.select { |k| k.start_with?('dialog_param') }
-  key_list = {}
-  key_list.each_with_object({}) do |key, hash|
-    match_data = ANSIBLE_DIALOG_VAR_REGEX.match(key)
-    hash["param_#{match_data[1]}"] = $evm.root[key] if match_data
-  end
+  playbook_extra_vars = {}
+  playbook_and_vars.select{|pb, vars|
+    match_data = EXTRA_VAR_REGEX.match(vars)
+    playbook_extra_vars["param_#{match_data[1]}"] = match_data[2] if match_data
+  }
+  # playbook_extra_vars
 end
 
 def machine_credential
@@ -52,8 +52,14 @@ def order_playbook
   $evm.set_state_var("playbook_stpr_id", playbook_stpr_id)
 end
 
-def play_book
+def playbook_and_vars
+  # "ansible_inside"=>{"lamp_simple_rhel7"=>"roles=Apache,TomCat"}
+  # {"lamp_simple_rhel7"=>"roles=Apache,TomCat"}
   @prov.options[:ws_values][:ansible_inside]
+end
+
+def playbook
+  playbook_and_vars.keys.first
 end
 
 def add_playbook_service(playbook_stpr_id)
@@ -64,7 +70,8 @@ def add_playbook_service(playbook_stpr_id)
   playbook_stpr = $evm.vmdb(:ServiceTemplateProvisionRequest).find_by(:id => playbook_stpr_id)
 
   unless playbook_stpr.nil?
-    $evm.log(:info, "playbook_stpr: #{playbook_stpr}")
+    $evm.log(:info, "playbook_stpr: #{playbook_stpr.inspect}")
+    $evm.log(:info, "playbook_stpr_id: #{playbook_stpr.id}")
     $evm.log(:info, "miq_request_tasks: #{playbook_stpr.miq_request_tasks.count}")
 
     if playbook_stpr.miq_request_tasks.count == 0
@@ -72,14 +79,18 @@ def add_playbook_service(playbook_stpr_id)
       $evm.root['ae_retry_interval'] = 1.minute
       exit MIQ_OK
     end
-    playbook_service = playbook_stpr.miq_request_tasks.first
+    # playbook_service = playbook_stpr.miq_request_tasks.first
+    playbook_service = playbook_stpr.miq_request_tasks.first.destination
 
     unless playbook_service.nil?
-      $evm.log(:info, "playbook_service: #{playbook_service}")
+      $evm.log(:info, "playbook_service_id: #{playbook_service.id}")
+      $evm.log(:info, "playbook_service: #{playbook_service.inspect}")
       parent_service_id = @prov.options[:ws_values][:service_id]
+      $evm.log(:info, "parent_service_id: #{parent_service_id}")
       parent_service    = $evm.vmdb(:Service).find_by(:id => parent_service_id)
 
-      parent_service.add_resource(playbook_service) unless parent_service.nil?
+      # parent_service.add_resource(playbook_service) unless parent_service.nil?
+      playbook_service.parent_service = parent_service unless parent_service.nil?
     end
   end
 end
@@ -87,26 +98,25 @@ end
 # Do stuff
 
 AUTH_CLASS = "ManageIQ_Providers_AutomationManager_Authentication".freeze
-ANSIBLE_DIALOG_VAR_REGEX = Regexp.new(/dialog_param_(.*)/)
+# ANSIBLE_DIALOG_VAR_REGEX = Regexp.new(/dialog_param_(.*)/)
+EXTRA_VAR_REGEX = Regexp.new(/(.*)=(.*)/)
 
 @prov = $evm.root["miq_provision"]
-# @playbook_stpr_id = nil
-
-# unless play_book.nil?
-#   begin
-#     order_playbook
-#   ensure   
-#     add_playbook_service unless @playbook_stpr_id.nil?
-#   end
-# end
 
 if $evm.state_var_exist?("playbook_stpr_id")
   playbook_stpr_id = $evm.get_state_var("playbook_stpr_id")
   add_playbook_service(playbook_stpr_id)
 else
   order_playbook
-  # Retry and playbook_stpr's check status 
+  # Retry and check playbook_stpr's status 
   $evm.root['ae_result'] = 'retry'
   $evm.root['ae_retry_interval'] = 1.minute
   exit MIQ_OK
 end
+
+# Add playbook_stpr.status check
+
+# irb(main):044:0> ServiceTemplateProvisionRequest.last.status
+# => "Error"
+# irb(main):045:0> ServiceTemplateProvisionRequest.last.state
+# => "finished"
