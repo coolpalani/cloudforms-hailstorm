@@ -176,18 +176,18 @@ end
 
 # Do stuff
 
-if $evm.state_var_exist?("stpr_id")
+if $evm.state_var_exist?("request_id")
   $evm.log(:info, "Phase 2 - Check provision request")
 
-  stpr_id = $evm.get_state_var("stpr_id")
-  stpr = $evm.vmdb(:ServiceTemplateProvisionRequest).find_by(:id => stpr_id)
+  request_id = $evm.get_state_var("request_id")
+  miq_request = $evm.vmdb(:MiqRequest).find_by(:id => request_id)
 
-  unless stpr.nil?
-    $evm.log(:info, "Request Status:#{stpr.status} State:#{stpr.state}")
+  unless miq_request.nil?
+    $evm.log(:info, "Request Status:#{miq_request.status} State:#{miq_request.state}")
 
-    if stpr.status == "Error"
+    if miq_request.status == "Error"
       exit MIQ_ERROR
-    elsif stpr.state == "finished"
+    elsif miq_request.state == "finished"
       exit MIQ_OK
     else
       $evm.root['ae_result'] = 'retry'
@@ -221,7 +221,7 @@ else
   request_id = exec_provision_request(user, parent_service_id)
   $evm.log(:info, request_id)
 
-  $evm.set_state_var("stpr_id", request_id)
+  $evm.set_state_var("request_id", request_id)
   $evm.root['ae_result'] = 'retry'
   $evm.root['ae_retry_interval'] = 1.minute
 end
