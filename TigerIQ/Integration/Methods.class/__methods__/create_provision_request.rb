@@ -128,6 +128,10 @@ def floating_ip_address
   $evm.root['dialog_floating_ip_address']
 end
 
+def manage
+  $evm.root['dialog_flavour']
+end
+
 def operating_system_type
   match = get_image.match(/(rhel|windows).*/i)
   match[1].downcase unless match.nil?
@@ -141,9 +145,9 @@ def get_software
   # { $evm.root['dialog_ansible_inside_play_book'] => "rolescfme=#{$evm.root['dialog_software'].join(",")}" }
   extra_vars = []
   extra_vars << "rolescfme=#{$evm.root['dialog_software'].join(",")}"
-  extra_vars << "local_role=#{$evm.root['dialog_flavour']}"
-  extra_vars << "local_user=#{$evm.root['dialog_local_password']}"
-  extra_vars << "local_password=#{$evm.root['dialog_local_password']}"
+  extra_vars << "local_role=#{manage}"
+  extra_vars << "local_user=#{$evm.root['dialog_local_user']}"          if manage == "unmanaged"
+  extra_vars << "local_password=#{$evm.root['dialog_local_password']}"  if manage == "unmanaged"
 
   case operating_system_type
   when 'rhel'
@@ -154,17 +158,13 @@ def get_software
 end
 
 def ssh_public_key
-  match = get_image.match(/(rhel|windows).*/i)
-  unless match.nil?
-    operating_system_type = match[1].downcase
-    case operating_system_type
-    when 'rhel'
-      # $evm.object['rhel_public_key']
-      $evm.object.decrypt('rhel_public_key')
-    when 'windows'
-      # $evm.object['windows_admin_password']
-      $evm.object.decrypt('windows_admin_password')
-    end
+  case operating_system_type
+  when 'rhel'
+    # $evm.object['rhel_public_key']
+    $evm.object.decrypt('rhel_public_key')
+  when 'windows'
+    # $evm.object['windows_admin_password']
+    $evm.object.decrypt('windows_admin_password')
   end
 end
 
