@@ -1,5 +1,5 @@
 #cloud-config
 users:
-  - name: root
+  - name: ansible
     ssh-authorized-keys:
       - <%= evm.fetch_path(:ws_values, :ssh_public_key) %>

@@ -29,10 +29,8 @@
         required: true
         required_method: 
         required_method_options: {}
-        default_value: 
+        default_value: RHOSP Overcloud3
         values:
-        - - 
-          - "<Choose>"
         - - RHOSP Overcloud3
           - EU1
         - - eu2
@@ -284,6 +282,82 @@
           ae_instance: 
           ae_message: 
           ae_attributes: {}
+      - name: local_user
+        description: 
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: false
+        required_method: 
+        required_method_options: {}
+        default_value: myuser
+        values: 
+        values_method: 
+        values_method_options: {}
+        options:
+          :protected: false
+        label: Local User (Un-managed)
+        position: 6
+        validator_type: 
+        validator_rule: 
+        reconfigurable: 
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldTextBox
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
+      - name: local_password
+        description: 
+        data_type: string
+        notes: 
+        notes_display: 
+        display: edit
+        display_method: 
+        display_method_options: {}
+        required: false
+        required_method: 
+        required_method_options: {}
+        default_value: secretpassword
+        values: 
+        values_method: 
+        values_method_options: {}
+        options:
+          :protected: true
+        label: Local Password (Un-managed)
+        position: 7
+        validator_type: 
+        validator_rule: 
+        reconfigurable: 
+        dynamic: false
+        show_refresh_button: 
+        load_values_on_init: 
+        read_only: false
+        auto_refresh: 
+        trigger_auto_refresh: 
+        visible: true
+        type: DialogFieldTextBox
+        resource_action:
+          action: 
+          resource_type: DialogField
+          ae_namespace: 
+          ae_class: 
+          ae_instance: 
+          ae_message: 
+          ae_attributes: {}
       - name: Role
         description: ''
         data_type: string
@@ -312,7 +386,7 @@
           :sort_order: :ascending
           :force_multi_value: false
         label: Role
-        position: 6
+        position: 8
         validator_type: 
         validator_rule: 
         reconfigurable: true
@@ -354,7 +428,7 @@
           :sort_by: :description
           :sort_order: :ascending
         label: Software
-        position: 7
+        position: 9
         validator_type: 
         validator_rule: 
         reconfigurable: 
@@ -396,7 +470,7 @@
           :sort_by: :description
           :sort_order: :ascending
         label: Size
-        position: 8
+        position: 10
         validator_type: 
         validator_rule: 
         reconfigurable: true
@@ -433,7 +507,7 @@
         values_method_options: {}
         options: {}
         label: Elastic
-        position: 9
+        position: 11
         validator_type: 
         validator_rule: 
         reconfigurable: true
@@ -471,7 +545,7 @@
         options:
           :protected: false
         label: Price
-        position: 10
+        position: 12
         validator_type: 
         validator_rule: 
         reconfigurable: true
@@ -509,7 +583,7 @@
         options:
           :protected: false
         label: Status
-        position: 11
+        position: 13
         validator_type: 
         validator_rule: 
         reconfigurable: 

@@ -2,6 +2,11 @@
 # Description: <Method description here>
 #
 
+# Expects:
+# - CloudInit customisation scripts (Infra > PXE) called RHEL/Windows
+# - Playbook services called lamp_simple_rhel7/lamp_simple_windows
+# - Ansible-Inside machine credentials matching (same name) selected OSP image
+
 def exec_provision_request(requester, parent_service_id)
 
   template = Ems.miq_templates.find_all{|i| i.name == get_image}
@@ -71,7 +76,8 @@ def exec_provision_request(requester, parent_service_id)
 
   $evm.log(:info, args)
 
-  $evm.execute('create_provision_request', *args)
+  request = $evm.execute('create_provision_request', *args)
+  request.id
 end
 
 def get_vm_name(vm_name)
@@ -212,9 +218,10 @@ else
   Ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => Region)
   raise "Unknown EMS #{Region}" if Ems.nil?
 
-  request = exec_provision_request(user, parent_service_id)
+  request_id = exec_provision_request(user, parent_service_id)
+  $evm.log(:info, request_id)
 
-  $evm.set_state_var("stpr_id", request.id)
+  $evm.set_state_var("stpr_id", request_id)
   $evm.root['ae_result'] = 'retry'
   $evm.root['ae_retry_interval'] = 1.minute
 end
