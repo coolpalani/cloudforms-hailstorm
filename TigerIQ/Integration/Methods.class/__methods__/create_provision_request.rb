@@ -150,8 +150,7 @@ end
 def get_software
   # { $evm.root['dialog_ansible_inside_play_book'] => "rolescfme=#{$evm.root['dialog_software'].join(",")}" }
   extra_vars = []
-  extra_vars << "rolescfme=#{$evm.root['dialog_software'].join(",")}"
-  extra_vars << "local_role=#{manage}"
+  extra_vars << "rolescfme=#{manage},#{$evm.root['dialog_software'].join(",")}"
   extra_vars << "local_user=#{$evm.root['dialog_local_user']}"          if manage == "unmanaged"
   extra_vars << "local_password=#{$evm.root['dialog_local_password']}"  if manage == "unmanaged"
 
