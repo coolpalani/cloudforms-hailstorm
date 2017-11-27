@@ -108,19 +108,11 @@ def cloud_tenant
 end
 
 def customization_template_id
-  match = get_image.match(/(rhel|windows).*/i)
-  unless match.nil?
-    operating_system_type = match[1].downcase
-    $evm.vmdb(:CustomizationTemplate).where("lower(name) like '#{operating_system_type}'").first.id rescue nil
-  end
+  $evm.vmdb(:CustomizationTemplate).where("lower(name) like '#{operating_system_type}'").first.id rescue nil
 end
 
 def customization_template_script
-  match = get_image.match(/(rhel|windows).*/i)
-  unless match.nil?
-    operating_system_type = match[1].downcase
-    $evm.vmdb(:CustomizationTemplate).where("lower(name) like '#{operating_system_type}'").first.script rescue nil
-  end
+  $evm.vmdb(:CustomizationTemplate).where("lower(name) like '#{operating_system_type}'").first.script rescue nil
 end
 
 def placement_availability_zone
@@ -136,23 +128,29 @@ def floating_ip_address
   $evm.root['dialog_floating_ip_address']
 end
 
+def operating_system_type
+  match = get_image.match(/(rhel|windows).*/i)
+  match[1].downcase unless match.nil?
+end
+
 def security_group
   Ems.security_groups.find_all{|i| i.name == SecurityGroup}.first.id rescue nil
 end
 
-# def check_tag(tag)
-#   category = "ansible_inside"
-#   unless $evm.execute('category_exists?', category)
-#     $evm.execute('category_create', :name => category, :single_value => false, :perf_by_tag => false, :description => "Ansible Inside Playbooks")
-#   end
-
-#   unless $evm.execute('tag_exists?', category, tag)
-#     $evm.execute('tag_create', category, :name => tag, :description => tag.capitalize)
-#   end
-# end
-
 def get_software
-  { $evm.root['dialog_ansible_inside_play_book'] => "rolescfme=#{$evm.root['dialog_software'].join(",")}" }
+  # { $evm.root['dialog_ansible_inside_play_book'] => "rolescfme=#{$evm.root['dialog_software'].join(",")}" }
+  extra_vars = []
+  extra_vars << "rolescfme=#{$evm.root['dialog_software'].join(",")}"
+  extra_vars << "local_role=#{$evm.root['dialog_flavour']}"
+  extra_vars << "local_user=#{$evm.root['dialog_local_password']}"
+  extra_vars << "local_password=#{$evm.root['dialog_local_password']}"
+
+  case operating_system_type
+  when 'rhel'
+    { "lamp_simple_rhel7"   => extra_vars.join(":") }
+  when 'windows'
+    { "lamp_simple_windows" => extra_vars.join(":") }
+  end
 end
 
 def ssh_public_key

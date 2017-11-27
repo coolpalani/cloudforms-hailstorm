@@ -8,10 +8,19 @@ def service_template
 end
 
 def extra_vars
+  # playbook_extra_vars = {}
+  # playbook_and_vars.select{|pb, vars|
+  #   match_data = EXTRA_VAR_REGEX.match(vars)
+  #   playbook_extra_vars["param_#{match_data[1]}"] = match_data[2].downcase if match_data
+  # }
+  # playbook_extra_vars
+
   playbook_extra_vars = {}
   playbook_and_vars.select{|pb, vars|
-    match_data = EXTRA_VAR_REGEX.match(vars)
-    playbook_extra_vars["param_#{match_data[1]}"] = match_data[2].downcase if match_data
+    vars.split(":").each{|key_value|
+      match_data = EXTRA_VAR_REGEX.match(key_value)
+      playbook_extra_vars["param_#{match_data[1]}"] = match_data[2].downcase if match_data
+    }
   }
   playbook_extra_vars
 end
