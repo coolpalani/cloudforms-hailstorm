@@ -8,13 +8,6 @@ def service_template
 end
 
 def extra_vars
-  # playbook_extra_vars = {}
-  # playbook_and_vars.select{|pb, vars|
-  #   match_data = EXTRA_VAR_REGEX.match(vars)
-  #   playbook_extra_vars["param_#{match_data[1]}"] = match_data[2].downcase if match_data
-  # }
-  # playbook_extra_vars
-
   playbook_extra_vars = {}
   playbook_and_vars.select{|pb, vars|
     vars.split(":").each{|key_value|
@@ -112,6 +105,8 @@ AUTH_CLASS = "ManageIQ_Providers_AutomationManager_Authentication".freeze
 EXTRA_VAR_REGEX = Regexp.new(/(.*)=(.*)/)
 
 @prov = $evm.root["miq_provision"]
+
+$evm.log(:info, extra_vars)
 
 if $evm.state_var_exist?("playbook_service_association")
   $evm.log(:info, "Phase 3 - Then check the request status")

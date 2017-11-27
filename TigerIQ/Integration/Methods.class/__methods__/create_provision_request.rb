@@ -170,24 +170,51 @@ end
 
 # Do stuff
 
-require 'rest-client'
+if $evm.state_var_exist?("stpr_id")
+  $evm.log(:info, "Phase 2 - Check provision request")
 
-user = $evm.root['user']
+  stpr_id = $evm.get_state_var("stpr_id")
+  stpr = $evm.vmdb(:ServiceTemplateProvisionRequest).find_by(:id => stpr_id)
 
-task = $evm.root['service_template_provision_task']
-task ? parent_service_id = task.destination.id : parent_service_id = nil
+  unless stpr.nil?
+    $evm.log(:info, "Request Status:#{stpr.status} State:#{stpr.state}")
 
-AppNetwork = 'app network'
-DbNetwork  = 'db network'
-WebNetwork = 'web network'
+    if stpr.status == "Error"
+      exit MIQ_ERROR
+    elsif stpr.state == "finished"
+      exit MIQ_OK
+    else
+      $evm.root['ae_result'] = 'retry'
+      $evm.root['ae_retry_interval'] = 1.minute
+      exit MIQ_OK
+    end
+  end
 
-SecurityGroup = "default-demo-vms"
+else
+  $evm.log(:info, "Phase 1 - Create provision request")
 
-Region      = $evm.root['dialog_region']        # OSP provider
-# Environment = $evm.root['dialog_environment']   # Availability Zone??
-elastic     = $evm.root['dialog_elastic']       # TBC, OSP provider capability
+  require 'rest-client'
 
-Ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => Region)
-raise "Unknown EMS #{Region}" if Ems.nil?
+  user = $evm.root['user']
+  task = $evm.root['service_template_provision_task']
+  task ? parent_service_id = task.destination.id : parent_service_id = nil
 
-request = exec_provision_request(user, parent_service_id)
+  AppNetwork = 'app network'
+  DbNetwork  = 'db network'
+  WebNetwork = 'web network'
+
+  SecurityGroup = "default-demo-vms"
+
+  Region      = $evm.root['dialog_region']        # OSP provider
+  # Environment = $evm.root['dialog_environment']   # Availability Zone??
+  elastic     = $evm.root['dialog_elastic']       # TBC, OSP provider capability
+
+  Ems = $evm.vmdb(:ExtManagementSystem).find_by(:name => Region)
+  raise "Unknown EMS #{Region}" if Ems.nil?
+
+  request = exec_provision_request(user, parent_service_id)
+
+  $evm.set_state_var("stpr_id", request.id)
+  $evm.root['ae_result'] = 'retry'
+  $evm.root['ae_retry_interval'] = 1.minute
+end
