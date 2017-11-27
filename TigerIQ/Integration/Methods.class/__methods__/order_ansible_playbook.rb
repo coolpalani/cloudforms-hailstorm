@@ -118,7 +118,7 @@ if $evm.state_var_exist?("playbook_service_association")
     $evm.log(:info, "playbook_stpr Status:#{playbook_stpr.status} State:#{playbook_stpr.state}")
 
     if playbook_stpr.status == "Error"
-      exit MIQ_ERROR
+      raise "Playbook Service Provision Request has failed"
     elsif playbook_stpr.state == "finished"
       exit MIQ_OK
     else

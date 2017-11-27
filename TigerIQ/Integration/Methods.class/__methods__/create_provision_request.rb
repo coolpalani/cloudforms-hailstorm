@@ -179,6 +179,7 @@ if $evm.state_var_exist?("request_id")
   $evm.log(:info, "Phase 2 - Check provision request")
 
   request_id = $evm.get_state_var("request_id")
+  $evm.log(:info, request_id)
   miq_request = $evm.vmdb(:MiqRequest).find_by(:id => request_id)
 
   unless miq_request.nil?
