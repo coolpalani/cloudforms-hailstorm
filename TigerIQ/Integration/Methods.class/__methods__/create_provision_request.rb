@@ -186,7 +186,7 @@ if $evm.state_var_exist?("request_id")
     $evm.log(:info, "Request Status:#{miq_request.status} State:#{miq_request.state}")
 
     if miq_request.status == "Error"
-      exit MIQ_ERROR
+      $evm.root['ae_result'] = 'error'
     elsif miq_request.state == "finished"
       exit MIQ_OK
     else
